@@ -107,8 +107,8 @@ DOM.mousePos = function (el: HTMLElement, e: MouseEvent | window.TouchEvent | To
     const rect = el.getBoundingClientRect();
     const t = window.TouchEvent && (e instanceof window.TouchEvent) ? e.touches[0] : e;
     return new Point(
-        t.clientX - rect.left - el.clientLeft,
-        t.clientY - rect.top - el.clientTop
+        (t.clientX - rect.left) * el.offsetWidth / rect.width - el.clientLeft,
+        (t.clientY - rect.top) * el.offsetHeight / rect.height - el.clientTop
     );
 };
 
@@ -118,8 +118,8 @@ DOM.touchPos = function (el: HTMLElement, e: TouchEvent) {
     const touches = (e.type === 'touchend') ? e.changedTouches : e.touches;
     for (let i = 0; i < touches.length; i++) {
         points.push(new Point(
-            touches[i].clientX - rect.left - el.clientLeft,
-            touches[i].clientY - rect.top - el.clientTop
+            (touches[i].clientX - rect.left) * el.offsetWidth / rect.width - el.clientLeft,
+            (touches[i].clientY - rect.top) * el.offsetHeight / rect.height - el.clientTop
         ));
     }
     return points;
