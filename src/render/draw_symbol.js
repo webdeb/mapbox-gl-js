@@ -261,8 +261,8 @@ function drawLayerSymbols(painter, sourceCache, layer, coords, isText, translate
 
         if (!program) {
             program = painter.useProgram(getSymbolProgramName(isSDF, isText, bucket), programConfiguration);
-            size = symbolSize.evaluateSizeForZoom(sizeData, tr.zoom);
         }
+        size = symbolSize.evaluateSizeForZoom(sizeData, Math.floor(tr.zoom) !== bucket.zoom ? bucket.zoom : tr.zoom);
 
         let texSize: [number, number];
         let texSizeIcon: [number, number] = [0, 0];
