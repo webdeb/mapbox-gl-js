@@ -16,7 +16,7 @@ import type {
 } from '../data/array_types';
 import {WritingMode} from '../symbol/shaping';
 
-export {updateLineLabels, hideGlyphs, getLabelPlaneMatrix, getGlCoordMatrix, project, placeFirstAndLastGlyph, xyTransformMat4};
+export {updateLineLabels, hideGlyphs, getLabelPlaneMatrix, getGlCoordMatrix, project, placeFirstAndLastGlyph, placeGlyphAlongLine, xyTransformMat4};
 
 /*
  * # Overview of coordinate spaces
@@ -177,11 +177,10 @@ function updateLineLabels(bucket: SymbolBucket,
         }
 
         const cameraToAnchorDistance = anchorPos[3];
-        const perspectiveRatio = 0.5 + 0.5 * (cameraToAnchorDistance / painter.transform.cameraToCenterDistance);
+        const perspectiveRatio = 0.5 + 0.5 * (painter.transform.cameraToCenterDistance / cameraToAnchorDistance);
 
         const fontSize = symbolSize.evaluateSizeForFeature(sizeData, partiallyEvaluatedSize, symbol);
-        const pitchScaledFontSize = pitchWithMap ?
-            fontSize * perspectiveRatio :
+        const pitchScaledFontSize = pitchWithMap ? fontSize / perspectiveRatio : fontSize * perspectiveRatio;
             fontSize / perspectiveRatio;
 
         const tileAnchorPoint = new Point(symbol.anchorX, symbol.anchorY);
@@ -380,6 +379,7 @@ function placeGlyphAlongLine(offsetX: number,
     let distanceToPrev = 0;
     let currentSegmentDistance = 0;
     const absOffsetX = Math.abs(combinedOffsetX);
+    const pathVertices = [];
 
     while (distanceToPrev + currentSegmentDistance <= absOffsetX) {
         currentIndex += dir;
@@ -389,6 +389,7 @@ function placeGlyphAlongLine(offsetX: number,
             return null;
 
         prev = current;
+        pathVertices.push(current);
 
         current = projectionCache[currentIndex];
         if (current === undefined) {
@@ -422,14 +423,12 @@ function placeGlyphAlongLine(offsetX: number,
 
     const segmentAngle = angle + Math.atan2(current.y - prev.y, current.x - prev.x);
 
+    pathVertices.push(p);
+
     return {
         point: p,
         angle: segmentAngle,
-        tileDistance: returnTileDistance ?
-            {
-                prevTileDistance: (currentIndex - dir) === initialIndex ? 0 : lineVertexArray.gettileUnitDistanceFromAnchor(currentIndex - dir),
-                lastSegmentViewportDistance: absOffsetX - distanceToPrev
-            } : null
+        path: pathVertices
     };
 }
 

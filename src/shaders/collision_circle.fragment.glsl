@@ -10,17 +10,20 @@ void main() {
     float alpha = 0.5;
 
     // Red = collision, hide label
-    vec4 color = vec4(1.0, 0.0, 0.0, 1.0) * alpha;
+    vec4 color = vec4(0.0, 0.0, 1.0, 1.0) * alpha;
 
     // Blue = no collision, label is showing
     if (v_placed > 0.5) {
         color = vec4(0.0, 0.0, 1.0, 0.5) * alpha;
     }
+    else
+        discard;
 
-    if (v_notUsed > 0.5) {
-        // This box not used, fade it out
-        color *= .2;
-    }
+    //if (v_notUsed > 0.5) {
+    //    // This box not used, fade it out
+    //    color *= .2;
+    //    discard;
+    //}
 
     float extrude_scale_length = length(v_extrude_scale);
     float extrude_length = length(v_extrude) * extrude_scale_length;

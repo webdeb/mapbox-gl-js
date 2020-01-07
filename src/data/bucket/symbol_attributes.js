@@ -58,6 +58,11 @@ export const collisionCircleLayout = createLayout([ // used to render collision 
     {name: 'a_extrude',    components: 2, type: 'Int16'}
 ], 4);
 
+export const collisionCircleLayoutTemp = createLayout([ // used to render collision circles for debugging purposes
+    {name: 'a_pos',        components: 2, type: 'Int16'},
+    {name: 'a_reserved',   components: 2, type: 'Int16'}
+], 4);
+
 export const placement = createLayout([
     {type: 'Int16', name: 'anchorX'},
     {type: 'Int16', name: 'anchorY'},

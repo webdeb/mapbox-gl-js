@@ -625,6 +625,15 @@ export class Placement {
             if (placeText && placedGlyphCircles) {
                 this.collisionIndex.insertCollisionCircles(placedGlyphCircles.circles, layout.get('text-ignore-placement'),
                         bucket.bucketInstanceId, textFeatureIndex, collisionGroup.ID);
+
+                for (let i = 0; i < placedGlyphCircles.circles.length; i+=4) {
+                    bucket.collisionCircleArrayTemp.push(placedGlyphCircles.circles[i + 0]);
+                    bucket.collisionCircleArrayTemp.push(placedGlyphCircles.circles[i + 1]);
+                    bucket.collisionCircleArrayTemp.push(placedGlyphCircles.circles[i + 2]);
+                    bucket.collisionCircleArrayTemp.push(0);
+
+                    bucket.posMatrixCircles = posMatrix;
+                }
             }
 
             assert(symbolInstance.crossTileID !== 0);
@@ -633,6 +642,8 @@ export class Placement {
             this.placements[symbolInstance.crossTileID] = new JointPlacement(placeText || alwaysShowText, placeIcon || alwaysShowIcon, offscreen || bucket.justReloaded);
             seenCrossTileIDs[symbolInstance.crossTileID] = true;
         };
+
+        bucket.collisionCircleArrayTemp = [];
 
         if (zOrderByViewportY) {
             assert(bucketPart.symbolInstanceStart === 0);

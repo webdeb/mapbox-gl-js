@@ -20,12 +20,26 @@ export type CollisionUniformsType = {|
     'u_overscale_factor': Uniform1f
 |};
 
+export type COllisionUniformsTypeTemp = {|
+    'u_matrix': UniformMatrix4f,
+    'u_toWorld': UniformMatrix4f,
+    'u_fromWorld': UniformMatrix4f,
+    'u_viewport_size': Uniform2f
+|};
+
 const collisionUniforms = (context: Context, locations: UniformLocations): CollisionUniformsType => ({
     'u_matrix': new UniformMatrix4f(context, locations.u_matrix),
     'u_camera_to_center_distance': new Uniform1f(context, locations.u_camera_to_center_distance),
     'u_pixels_to_tile_units': new Uniform1f(context, locations.u_pixels_to_tile_units),
     'u_extrude_scale': new Uniform2f(context, locations.u_extrude_scale),
     'u_overscale_factor': new Uniform1f(context, locations.u_overscale_factor)
+});
+
+const collisionUniformsTemp = (context: Context, locations: UniformLocations): CollisionUniformsType => ({
+    'u_matrix': new UniformMatrix4f(context, locations.u_matrix),
+    'u_toWorld': new UniformMatrix4f(context, locations.u_toWorld),
+    'u_fromWorld': new UniformMatrix4f(context, locations.u_fromWorld),
+    'u_viewport_size': new Uniform2f(context, locations.u_viewport_size)
 });
 
 const collisionUniformValues = (
@@ -46,4 +60,18 @@ const collisionUniformValues = (
     };
 };
 
-export {collisionUniforms, collisionUniformValues};
+const collisionUniformValuesTemp = (
+    matrix: Float32Array,
+    toWorld: Float32Array,
+    fromWorld: Float32Array,
+    viewportSize: array<number>
+): UniformValues<COllisionUniformsTypeTemp> => {
+    return {
+        'u_matrix': matrix,
+        'u_toWorld': toWorld,
+        'u_fromWorld': fromWorld,
+        'u_viewport_size': viewportSize
+    };
+};
+
+export {collisionUniforms, collisionUniformValues, collisionUniformsTemp, collisionUniformValuesTemp};

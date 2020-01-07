@@ -3,7 +3,7 @@
 import {fillExtrusionUniforms, fillExtrusionPatternUniforms} from './fill_extrusion_program';
 import {fillUniforms, fillPatternUniforms, fillOutlineUniforms, fillOutlinePatternUniforms} from './fill_program';
 import {circleUniforms} from './circle_program';
-import {collisionUniforms} from './collision_program';
+import {collisionUniforms, collisionUniformsTemp} from './collision_program';
 import {debugUniforms} from './debug_program';
 import {clippingMaskUniforms} from './clipping_mask_program';
 import {heatmapUniforms, heatmapTextureUniforms} from './heatmap_program';
@@ -23,6 +23,7 @@ export const programUniforms = {
     circle: circleUniforms,
     collisionBox: collisionUniforms,
     collisionCircle: collisionUniforms,
+    collisionCircleTemp: collisionUniformsTemp,
     debug: debugUniforms,
     clippingMask: clippingMaskUniforms,
     heatmap: heatmapUniforms,

@@ -317,6 +317,8 @@ class SymbolBucket implements Bucket {
     sortedAngle: number;
     featureSortOrder: Array<number>;
 
+    collisionCircleArrayTemp: Array<number>;
+
     text: SymbolBuffers;
     icon: SymbolBuffers;
     textCollisionBox: CollisionBuffers;
@@ -345,6 +347,8 @@ class SymbolBucket implements Bucket {
         this.hasPaintOverrides = false;
         this.hasRTLText = false;
         this.sortKeyRanges = [];
+
+        this.collisionCircleArrayTemp = [];
 
         const layer = this.layers[0];
         const unevaluatedLayoutValues = layer._unevaluatedLayout._values;
